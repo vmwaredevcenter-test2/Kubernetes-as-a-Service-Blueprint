@@ -1,0 +1,142 @@
+id: Kubernetes
+name: Kubernetes
+description: Deploy a Kubernetes Cluster on vSphere
+status: PUBLISHED
+components:
+  Kube-Master-RHEL7_1:
+    type: Software.KubernetesMasterRHEL7
+    data:
+      host: ${_resource~Master}
+      my_ip:
+        fixed: ${_resource~Master~ip_address}
+        required: true
+  Kube-Minion-RHEL7_1:
+    type: Software.KubernetesMinionRHEL7
+    dependsOn:
+    - Kube-Master-RHEL7_1
+    data:
+      host: ${_resource~Minion}
+      master_ip:
+        fixed: ${_resource~Master~ip_address}
+        required: true
+      my_ip:
+        fixed: ${_resource~Minion~ip_address}
+        required: true
+  Master:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        fixed: 1
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        fixed: 1
+        min: 1
+      disks:
+      - capacity: 16
+        custom_properties: null
+        id: 1451340193235
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Linux
+      machine_prefix:
+        fixed:
+          id: Use group default
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        fixed: 2048
+        min: 2048
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 93dc1859-8843-49bb-8e81-323846c584ea
+          label: CentOS7
+      source_machine_external_snapshot:
+        fixed: 6
+      source_machine_name:
+        fixed: CentOS7
+      source_machine_vmsnapshot:
+        fixed:
+          id: '18'
+      storage:
+        fixed: 16
+        min: 16
+  Minion:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 10
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        fixed: 1
+        min: 1
+      disks:
+      - capacity: 16
+        custom_properties: null
+        id: 1451340266950
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Linux
+      machine_prefix:
+        fixed:
+          id: Use group default
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        fixed: 2048
+        min: 2048
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine:
+        fixed:
+          id: 93dc1859-8843-49bb-8e81-323846c584ea
+          label: CentOS7
+      source_machine_external_snapshot:
+        fixed: 6
+      source_machine_name:
+        fixed: CentOS7
+      source_machine_vmsnapshot:
+        fixed:
+          id: '18'
+      storage:
+        fixed: 16
+        min: 16
+layout:
+  Kube-Master-RHEL7_1: 0,0
+  Kube-Minion-RHEL7_1: 0,0
+  Master: 0,0
+  Minion: 0,1

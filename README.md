@@ -1,1 +1,0 @@
-# Kubernetes-as-a-Service-Blueprint
